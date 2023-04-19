@@ -16,10 +16,11 @@
 -include device/samsung/scx30g-common/BoardConfigCommon.mk
 
 # Inherit from the proprietary version
--include vendor/samsung/core33g/BoardConfigVendor.mk
+-include vendor/samsung/kanas/BoardConfigVendor.mk
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := sc7730s
+TARGET_BOOTLOADER_BOARD_NAME := SC7735S
+TARGET_BOARD_PLATFORM_GPU := mali-400 MP
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
@@ -82,15 +83,15 @@ TARGET_BOARD_BACK_CAMERA_MIPI := phyab
 ##########################################
 
 # Kernel
-TARGET_KERNEL_CONFIG := cyanogen_core33g_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/core33g
+TARGET_KERNEL_CONFIG := impasta_kanas_lineage_15_defconfig
+TARGET_KERNEL_SOURCE := kernel/samsung/kanas
 
 # Resolution
 TARGET_SCREEN_HEIGHT := 800
 TARGET_SCREEN_WIDTH := 480
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := SM-G360H,SM-G360HU,core33g,core33gdd,core33gdx
+TARGET_OTA_ASSERT_DEVICE := kanas,kanas3g,kanas3gxx,kanas3gub,kanas3gnfcxx,kanas3gnfc,SM-G355H,SM-G355HN,SM-G355M
 
 # Graphics
 #TARGET_USES_GRALLOC1 := true
