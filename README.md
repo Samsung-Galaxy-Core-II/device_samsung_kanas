@@ -1,32 +1,42 @@
-##Device configuration for Samsung Galaxy Core Prime SPRD SM-G360H (core33g)
+# Device Tree Repository for Samsung Core 2 (Kanas)
 
-=====================================
+## Spec Sheet
 
-Basic   | Spec Sheet
--------:|:-------------------------
-CPU     | Quad-core 1,2GHz Cortex-A7
-CHIPSET | Spreadtrum SC7730S sc8830
-GPU     | Mali-400MP2
-Memory  | 1 GB
-Shipped Android Version | Android 4.4.4 with TouchWiz Essence
-Storage | 8 GB
-MicroSD | Up to 64 GB
-Battery | 2000 mAh Li-Ion (removable)
-Dimensions | 144.8 x 72.1 x 8.6 mm
-Display | 480 x 800 pixels, 5.0"
-Rear Camera  | 5.0 MP, LED flash
-Front Camera | 2.0 MP
-Release Date | November 2014
+| Feature                 | Specification                        |
+| :---------------------- | :----------------------------------- |
+| CPU                     | Quad-core 1.3GHz Cortex-A7           |
+| Chipset                 | Spreadtrum SC7735S                   |
+| GPU                     | Mali-400MP                           |
+| Memory                  | 720 MB                               |
+| Shipped Android Version | Android 4.4.2 with TouchWiz Essence  |
+| Storage                 | 4 GB                                 |
+| MicroSD                 | Up to 64 GB                          |
+| Battery                 | 2600 mAh Li-Ion (removable)          |
+| Dimensions              | 144.8 x 72.1 x 72.1 mm               |
+| Display                 | 480 x 800 pixels, 5.0" LCD           |
+| Rear Camera             | 5 MP, LED flash                      |
+| Front Camera            | 2 MP                                 |
+| Release Date            | June 2015                            |
 
-##Building instructions
+## Device Picture
 
-### What do you need?
-* 50GB left of your hard disk space
-* Basic skills / knowledge of Linux
+![samsung core 2](https://cdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-core-2-sm-g355h-1.jpg "Samsung Galaxy core 2" )
 
-### Building steps
-* 1. Sync Android source
-* 2. Copy this file ([core33g.xml](https://github.com/koquantam/android_local_manifests/blob/cm-14.1-core33g/core33g.xml)) to `.repo/local_manifests` (if that folder doesn't exist then "mkdir" it)
-* 3. `repo sync` again
-* 4. After syncing source and device-specific repo (from step 2), from your source root folder (where you have synced) open Terminal, `cd` to device/samsung/scx30g-common, type `./patch.sh` (this is the quick patching script)
-* 5. `cd` to your source root again, type `. build/envsetup.sh && brunch core33g`
+## Copyright
+
+```
+#
+# Copyright (C) 2017 The LineageOS Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
