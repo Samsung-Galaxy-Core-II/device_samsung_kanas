@@ -1,4 +1,5 @@
-# Copyright (C) 2014 The CyanogenMod Project
+#
+# Copyright (C) 2017 The Lineage Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,17 +12,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-# This file is executed by build/envsetup.sh, and can use anything
-# defined in envsetup.sh.
 #
-# In particular, you can add lunch options with the add_lunch_combo
-# function: add_lunch_combo generic-eng
 
-# Apply patches first
-sh device/samsung/kanas/patches/apply.sh;
+LOCAL_PATH := $(my-dir)
 
-# Prepare for lunch
-for i in eng user userdebug; do
-add_lunch_combo lineage_kanas-${i};
-done
+define create
+include $(CLEAR_VARS)
+LOCAL_MODULE := $1
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)
+LOCAL_SRC_FILES := $1
+include $(BUILD_PREBUILT)
+endef
+
+init_files := \
+	fstab.sc8830
+
+$(foreach p,$(init_files),$(eval $(call create,$(p))))

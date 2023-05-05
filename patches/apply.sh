@@ -1,3 +1,4 @@
+#!/bin/sh
 
 # vendorsetup.sh is sourced by build/envsetup.sh in root of android build tree. Hope that nobody can correctly source it not from root of android tree.
 build_root=$(pwd) 
@@ -53,7 +54,7 @@ for patch in `find -type f -name '*.patch'|cut -d / -f 2-|sort`; do
 	else
 		echo No
 		echo "Trying to apply patch $(basename "$patch") to '$repo_to_patch'"
-		if ! git am $absolute_patch_path; then
+		if ! git am --ignore-whitespace $absolute_patch_path; then
 			echo "!!!!!!!!!!!! Failed, aborting git am !!!!!!!!!!!!!!"
 			git am --abort
 		fi

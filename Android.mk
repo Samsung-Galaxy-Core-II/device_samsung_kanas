@@ -1,6 +1,4 @@
-#
-# Copyright (C) 2016 Android Open Source Project
-# Copyright (C) 2016 The CyanogenMod Project
+# Copyright (C) 2017 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,10 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
+ifneq ($(filter kanas,$(TARGET_DEVICE)),)
 
 LOCAL_PATH := $(call my-dir)
 
-ifneq (,$(filter kanas,$(TARGET_DEVICE)))
 include $(call all-makefiles-under,$(LOCAL_PATH))
+
 endif

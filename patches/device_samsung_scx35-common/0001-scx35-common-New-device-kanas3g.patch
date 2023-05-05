@@ -1,0 +1,28 @@
+From 5c03c5fbcab7db1520e454a3f745ca0ac29c0d37 Mon Sep 17 00:00:00 2001
+From: Mark Enriquez <enriquezmark36@gmail.com>
+Date: Mon, 17 Dec 2018 09:55:38 +0800
+Subject: scx35-common: New device - kanas3g
+
+Though for some reason we still call it as "kanas".
+
+Change-Id: I2a2ce4bb8f0bf6f275da194e90e34711c341d6ef
+Signed-off-by: Mark Enriquez <enriquezmark36@gmail.com>
+---
+ Android.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Android.mk b/Android.mk
+index 8e70b1b..6609ee0 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -16,6 +16,6 @@
+ 
+ LOCAL_PATH := $(call my-dir)
+ 
+-ifneq ($(filter grandprimeve3g coreprimeve3g core33g grandneove3g,$(TARGET_DEVICE)),)
++ifneq ($(filter grandprimeve3g coreprimeve3g core33g grandneove3g kanas,$(TARGET_DEVICE)),)
+ include $(call all-subdir-makefiles,$(LOCAL_PATH))
+ endif
+-- 
+2.19.2
+

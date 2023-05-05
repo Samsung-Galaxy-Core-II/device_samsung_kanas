@@ -1,0 +1,95 @@
+
+# import /init.storage.rc // for samsung
+
+# add for board-relative touch screen driver for
+# alarm mode and normal mode.
+
+on early-boot
+
+# radio pipe
+    mkdir /dev/rpipe 0550 radio radio
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.0 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.1 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.2 p
+
+on boot
+    # Marvell GPS
+    chown gps system /proc/driver/sirf
+    chmod 664 /proc/driver/sirf
+
+    # create filesystem for gps
+    mkdir /data/system/gps 0771 gps system
+    mkdir /data/system/gps/mrvlgps 0771 gps system
+    mkdir /data/system/gps/mrvlgps/rxn 0771 gps system
+    mkdir /data/system/gps/mrvlgps/rxn/RXN 0771 gps system
+
+#To allow interfaces to get v6 address when tethering is enabled
+    write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2
+    write /proc/sys/net/ipv6/conf/rmnet1/accept_ra 2
+    write /proc/sys/net/ipv6/conf/rmnet2/accept_ra 2
+
+# bluetooth
+    # UART0 device
+    chmod 660 /dev/ttyS0
+    chown bluetooth net_bt_stack /dev/ttyS0
+
+    chmod 660 /sys/class/rfkill/rfkill0/state
+    chmod 660 /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
+    mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
+    mkdir /data/system 0770 system system
+    mkdir /etc/wifi 0770 wifi wifi
+    write /data/misc/wifi/fwpath sta_mode
+    chmod 660 /data/misc/wifi/fwpath
+    chown wifi wifi /data/misc/wifi/fwpath
+    rmdir /data/system/wpa_supplicant
+    setprop wifi.interface wlan0
+
+# BFQio CGroup support
+# This is a copy of lineage-iosched.rc since the
+# "on init" and "on boot" markers will have been passed by the time
+# that init file is parsed.
+#
+# With/without some alterations.
+on init
+    # Set up the BFQIO hierarchy
+    mkdir /dev/bfqio 0755 system system
+    mount cgroup none /dev/bfqio bfqio
+    chown system system /dev/bfqio/tasks
+    chmod 0664 /dev/bfqio/tasks
+    chmod 0220 /dev/bfqio/cgroup.event_control
+
+    # Soft realtime class for display service
+    mkdir /dev/bfqio/rt-display 0755 system system
+    write /dev/bfqio/rt-display/bfqio.ioprio_class 1
+    chown system system /dev/bfqio/rt-display/tasks
+    chmod 0664 /dev/bfqio/rt-display/tasks
+    chmod 0220 /dev/bfqio/rt-display/cgroup.event_control
+
+    # background services
+    mkdir /dev/bfqio/background  0755 system system
+    chown system system /dev/bfqio/background/tasks
+    chmod 0664 /dev/bfqio/background/tasks
+    chmod 0220 /dev/bfqio/background/cgroup.event_control
+    write /dev/bfqio/background/bfqio.ioprio_class 2
+    write /dev/bfqio/system-background/bfqio.ioprio 7
+
+    # system background services
+    mkdir /dev/bfqio/system-background 0755 system system
+    chown system system /dev/bfqio/system-background/tasks
+    chmod 0664 /dev/bfqio/system-background/tasks
+    chmod 0220 /dev/bfqio/system-background/cgroup.event_control
+    write /dev/bfqio/system-background/bfqio.ioprio_class 2
+    write /dev/bfqio/system-background/bfqio.ioprio 4
+
+on boot
+    chown system system /sys/block/mmcblk0/queue/scheduler
+    chmod 0664 /sys/block/mmcblk0/queue/scheduler
+    restorecon /sys/block/mmcblk0/queue/scheduler
+
+    chown system system /sys/block/dm-0/queue/scheduler
+    chmod 0664 /sys/block/dm-0/queue/scheduler
+    restorecon /sys/block/dm-0/queue/scheduler

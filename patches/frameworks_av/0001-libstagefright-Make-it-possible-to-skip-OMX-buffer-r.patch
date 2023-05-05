@@ -1,0 +1,74 @@
+From 965f15e36845d72b30681a35b6ef7f45ead61c26 Mon Sep 17 00:00:00 2001
+From: Mark Enriquez <enriquezmark36@gmail.com>
+Date: Fri, 27 Sep 2019 21:36:26 +0800
+Subject: [PATCH] libstagefright: Make it possible to skip OMX buffer
+ reallocation
+
+Some devices don't like the call to setParameter() at this point, so
+skip this call if enough buffers are already allocated. This check
+was present in KitKat but got removed when code to allocate extra-
+buffers was introduced.
+
+This is activated only for omap4 for now.
+
+[This ports the patch to the new Soong build system except for the omap4 thing]
+This added check can be used by setting BOARD_CANT_REALLOCATE_OMX_BUFFERS to true
+on your BoardConfig.mk.
+
+Since this is soong, there should be a complement patch
+on the vendor/lineage directory.
+Signed-off-by: Mark Enriquez <enriquezmark36@gmail.com>
+
+Change-Id: I87a9ac8cfce491307402b0efb545ee152c14eb7c
+Signed-off-by: Mark Enriquez <enriquezmark36@gmail.com>
+---
+ media/libstagefright/ACodec.cpp | 9 +++++++++
+ media/libstagefright/Android.bp | 5 +++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
+index def8ada3c..52d69429e 100644
+--- a/media/libstagefright/ACodec.cpp
++++ b/media/libstagefright/ACodec.cpp
+@@ -1182,6 +1182,12 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+     // 2. try to allocate two (2) additional buffers to reduce starvation from
+     //    the consumer
+     //    plus an extra buffer to account for incorrect minUndequeuedBufs
++#ifdef BOARD_CANT_REALLOCATE_OMX_BUFFERS
++    // Some devices don't like to set OMX_IndexParamPortDefinition at this
++    // point (even with an unmodified def), so skip it if possible.
++    // This check was present in KitKat.
++    if (def.nBufferCountActual < def.nBufferCountMin + *minUndequeuedBuffers) {
++#endif
+     for (OMX_U32 extraBuffers = 2 + 1; /* condition inside loop */; extraBuffers--) {
+         OMX_U32 newBufferCount =
+             def.nBufferCountMin + *minUndequeuedBuffers + extraBuffers;
+@@ -1201,6 +1207,9 @@ status_t ACodec::configureOutputBuffersFromNativeWindow(
+             return err;
+         }
+     }
++#ifdef BOARD_CANT_REALLOCATE_OMX_BUFFERS
++    }
++#endif
+ 
+     err = native_window_set_buffer_count(
+             mNativeWindow.get(), def.nBufferCountActual);
+diff --git a/media/libstagefright/Android.bp b/media/libstagefright/Android.bp
+index c8d4e4aaa..6ed11bf0a 100644
+--- a/media/libstagefright/Android.bp
++++ b/media/libstagefright/Android.bp
+@@ -146,6 +146,11 @@ cc_library_shared {
+             // enable experiments only in userdebug and eng builds
+             cflags: ["-DENABLE_STAGEFRIGHT_EXPERIMENTS"],
+         },
++        lineage: {
++            board_cant_reallocate_omx_buffers: {
++                cppflags: ["-DBOARD_CANT_REALLOCATE_OMX_BUFFERS"],
++            },
++        },
+     },
+ 
+     sanitize: {
+-- 
+2.23.0
+
