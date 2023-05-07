@@ -19,7 +19,10 @@ $(call inherit-product, vendor/lineage/config/telephony.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
 # Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+$(call inherit-product, vendor/lineage/config/common_mini_phone.mk)
+
+# Inherit Android Go configurations
+$(call inherit-product, build/target/product/go_defaults.mk)
 
 # Boot animation
 TARGET_BOOTANIMATION_HALF_RES := true
