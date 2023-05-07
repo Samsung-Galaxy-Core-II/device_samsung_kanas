@@ -24,6 +24,9 @@ $(call inherit-product, vendor/lineage/config/common_mini_phone.mk)
 # Inherit Android Go configurations
 $(call inherit-product, build/target/product/go_defaults.mk)
 
+# Inherit Android Go configurations
+$(call inherit-product, build/target/product/product_launched_with_k.mk)
+
 # Boot animation
 TARGET_BOOTANIMATION_HALF_RES := true
 TARGET_SCREEN_HEIGHT := 800
